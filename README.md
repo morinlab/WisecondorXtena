@@ -9,14 +9,14 @@ The original WisecondorX is consistent of 3 main steps:
 
 ### The run_wisecondorX.smk snakefile is set up as such:
 Section 1:
-* Runs the 3 WisecondorX steps with the original parameters and specifies 500kb bins
-* Plots the copy number profile that would be originally output by WisecondorX prior to any modifications made (this is called "unshifted") along with the corresponding density plot from a Gaussian mixture model
-* Determines how offset the mean log2 ratio is from zero (corresponding to how biased the assigned genomic aberrations are from the copy neutral state), as well as estimates the purity of each sample
+* Runs the 3 WisecondorX steps with the original parameters and specifies 500kb bins.
+* Plots the copy number profile that would be originally output by WisecondorX prior to any modifications made (this is called "unshifted") along with the corresponding density plot from a Gaussian mixture model.
+* Determines how offset the mean log2 ratio is from zero (corresponding to how biased the assigned genomic aberrations are from the copy neutral state), as well as estimates the purity of each sample.
 
 Section 2:
-* Reruns WisecondorX the offset value and purity estimate and inputs those as the offset_neut_peak and beta paramters respectively
-* Produces new copy number profile plots with the density curves, after the adjustment is performed
-* A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value
+* Reruns WisecondorX the offset value and purity estimate and inputs those as the offset_neut_peak and beta paramters, respectively.
+* Produces new copy number profile plots with the density curves, after the adjustment is performed.
+* A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value.
   * Note the offset line in the density curve and the offset mean value are both no longer relevant after shifting is complete and the second set of plots are generated.
 
 ## New parameters (See the WisecondorX github page for the pre-existing paramaters and their description)
