@@ -1,19 +1,23 @@
 # Improved_WisecondorX
 An improved version of the copy number caller, WisecondorX (https://github.com/CenterForMedicalGeneticsGhent/WisecondorX), that now infers purity and produces improved copy number calls from lpWGS data.
 
-## Running this modified version of WisecondorX --> WisecondorXtena :wink:
-The original WisecondorX is consistent of 3 main steps: 
+## WisecondorXtena :wink:
+This modified version of WisecondorX utilizes the original code with no specifications other than bin size, calculates purity and how offset the mean log2 ratio is from zero, and retiterates these values back into the modified code as parameters that adjusts the genomic segments accordingly.
+
+### The original WisecondorX is consistent of 3 main steps
 * File conversion (aligned reads (BAM) to NPZ file format)
 * Reference creation (using reference NPZ files)
 * CNV prediction (through a user-definable cut-off ("beta"), or the default (leverages Z-scores))
 
-### The run_wisecondorX.smk snakefile is set up as such:
-Section 1:
+
+### The modified WisecondorX is run via snakefile, consisting of two sections
+**The run_wisecondorX.smk set up:** 
+Section 1 (initial run to calculate offset mean and purity):
 * Runs the 3 WisecondorX steps with the original parameters and specifies 500kb bins.
 * Plots the copy number profile that would be originally output by WisecondorX prior to any modifications made (this is called "unshifted") along with the corresponding density plot from a Gaussian mixture model.
 * Determines how offset the mean log2 ratio is from zero (corresponding to how biased the assigned genomic aberrations are from the copy neutral state), as well as estimates the purity of each sample.
 
-Section 2:
+Section 2 (second run of WisecondorX to adjust segments):
 * Reruns WisecondorX the offset value and purity estimate and inputs those as the offset_neut_peak and beta paramters, respectively.
 * Produces new copy number profile plots with the density curves, after the adjustment is performed.
 * A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value.
