@@ -15,7 +15,7 @@ Section 1:
 
 Section 2:
 * Reruns WisecondorX the offset value and purity estimate and inputs those as the offset_neut_peak and beta paramters respectively
-* Produces new copy number profile plots with the density curves, after the adjustment is performed (note: the offset line in the density plot is no longer relevant to the analysis here)
+* Produces new copy number profile plots with the density curves, after the adjustment is performed (Note: the offset line in the density plot is no longer relevant to the analysis here)
 * A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value. (Note the offset mean is also recalculated but not relevant here)
 
 ## New parameters (See the WisecondorX github page for the pre-existing paramaters and their description)
