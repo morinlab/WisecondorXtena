@@ -17,7 +17,7 @@ Section 2:
 * Reruns WisecondorX the offset value and purity estimate and inputs those as the offset_neut_peak and beta paramters respectively
 * Produces new copy number profile plots with the density curves, after the adjustment is performed
 * A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value
-*   Note the offset line in the density curve and the offset mean value are both no longer relevant after shifting is complete and the second set of plots are generated.
+  * Note the offset line in the density curve and the offset mean value are both no longer relevant after shifting is complete and the second set of plots are generated.
 
 ## New parameters (See the WisecondorX github page for the pre-existing paramaters and their description)
 **offset_neut_peak** - A value calculated by the mixture model (using 1 cluster) that can be positive or negative (positive will cause an upwards shift and negative will cause a downwards shift in genomic segments). 
