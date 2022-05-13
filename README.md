@@ -2,7 +2,7 @@
 A modified version of the copy number caller, WisecondorX (https://github.com/CenterForMedicalGeneticsGhent/WisecondorX), that now infers purity and produces improved copy number calls from lpWGS data.
 
 ## WisecondorXtena :wink:
-This modified version of WisecondorX utilizes the original code with no specifications other than bin size, calculates purity and how offset the mean log2 ratio is from zero, and reiterates these values back into the modified code as parameters that adjusts the genomic segments accordingly.
+This version of WisecondorX utilizes the original code with no specifications other than bin size, calculates purity and how offset the mean log2 ratio is from zero, and reiterates these values back into the modified code as parameters that adjusts the genomic segments accordingly.
 
 ### The original WisecondorX is consistent of 3 main steps
 * File conversion (aligned reads (BAM) to NPZ file format)
