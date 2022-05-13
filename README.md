@@ -24,8 +24,8 @@ Section 2 (second run of WisecondorX to adjust segments):
 * A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value.
   * Note the offset line in the density curve and the offset mean value are both no longer relevant after shifting is complete and the second set of plots are generated.
 
-## New parameters (See the WisecondorX github page for the pre-existing paramaters and their description)
-**offset_neut_peak** - A value calculated by the mixture model (using 1 cluster) that can be positive or negative (positive will cause an upwards shift and negative will cause a downwards shift in genomic segments). 
+## New optional argument (See the WisecondorX github page for the pre-existing paramaters and their description)
+** --offset_neut_peak** - A value calculated by the mixture model (using 1 cluster) that can be positive or negative (positive will cause an upwards shift and negative will cause a downwards shift in genomic segments). 
 * How it works : this value is the mean log2 ratio of the neutral peak from the mixture model. It is added to the results_r, results_z and results_w variables to shift resulting log2 ratios and plots. 
 
 ## Additions to resulting tables and plots
