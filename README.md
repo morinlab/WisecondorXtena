@@ -22,14 +22,14 @@ Section 2 (second run of WisecondorX to adjust segments):
 * Reruns WisecondorX the offset value and purity estimate and inputs those as the offset_neut_peak and beta paramters, respectively.
 * Produces new copy number profile plots with the density curves, after the adjustment is performed.
 * A new purity estimate is calculated. This can be compared to IchorCNAs tumour fraction value.
-  * Note the offset line in the density curve and the offset mean value are both no longer relevant after shifting is complete and the second set of plots are generated.
+
+**To note:**
+* The offset line in the density curve and the offset mean value are both no longer relevant after shifting is complete and the second set of plots are generated.
+* Aberrant segments that are amplified are displayed only when the argument beta is used within Section 2 of the WisecondorX code. When beta is not used, Z-scores are utilized to call copy number aberrations and therefore only lost, neutral, and gained segments are assigned.
 
 ## New optional argument (See the WisecondorX github page for the pre-existing paramaters and their description)
 ** --offset_neut_peak** - A value calculated by the mixture model (using 1 cluster) that can be positive or negative (positive will cause an upwards shift and negative will cause a downwards shift in genomic segments). 
 * How it works : this value is the mean log2 ratio of the neutral peak from the mixture model. It is added to the results_r, results_z and results_w variables to shift resulting log2 ratios and plots. 
 
-## Additions to resulting tables and plots
-*TODO
-
-## New files generated
-* SEG file
+## New file generated
+* A segment file (.seg) is now produced by WisecondorXtena
