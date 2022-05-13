@@ -4,7 +4,7 @@ A modified version of the copy number caller, WisecondorX (https://github.com/Ce
 ## WisecondorXtena :wink:
 This version of WisecondorX utilizes the original code with no specifications other than an elevated bin size (the default is 5kb, this uses 500kb), calculates purity and how offset the mean log2 ratio is from zero, and reiterates these values back into the modified code as parameters that adjusts the genomic segments accordingly.
 
-### The original WisecondorX is consistent of 3 main steps
+### The original WisecondorX consists of 3 main steps
 * File conversion (aligned reads (BAM) to NPZ file format)
 * Reference creation (using reference NPZ files)
 * CNV prediction (through a user-definable cut-off ("beta"), or the default (leverages Z-scores))
