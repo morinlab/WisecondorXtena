@@ -38,7 +38,6 @@ rule bam_to_npz_samples:
     shell:
         "WisecondorX convert {input} {output} --binsize 500000"
 
-#havent tested this yet for all rules:
 rule bam_to_npz_normals:
     input:
         f"{bam_path_normals}" + "{sample}.bam"
