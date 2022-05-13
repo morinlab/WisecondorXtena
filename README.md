@@ -12,6 +12,7 @@ This modified version of WisecondorX utilizes the original code with no specific
 
 ### The modified WisecondorX is run via snakefile, consisting of two sections
 **The run_wisecondorX.smk set up:** 
+
 Section 1 (initial run to calculate offset mean and purity):
 * Runs the 3 WisecondorX steps with the original parameters and specifies 500kb bins.
 * Plots the copy number profile that would be originally output by WisecondorX prior to any modifications made (this is called "unshifted") along with the corresponding density plot from a Gaussian mixture model.
