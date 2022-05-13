@@ -1,5 +1,5 @@
 # Improved_WisecondorX
-An improved version of the copy number caller, WisecondorX (https://github.com/CenterForMedicalGeneticsGhent/WisecondorX), that now infers purity and produces improved copy number calls from lpWGS data.
+An moridifed version of the copy number caller, WisecondorX (https://github.com/CenterForMedicalGeneticsGhent/WisecondorX), that now infers purity and produces improved copy number calls from lpWGS data.
 
 ## WisecondorXtena :wink:
 This modified version of WisecondorX utilizes the original code with no specifications other than bin size, calculates purity and how offset the mean log2 ratio is from zero, and reiterates these values back into the modified code as parameters that adjusts the genomic segments accordingly.
