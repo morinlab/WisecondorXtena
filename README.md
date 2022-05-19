@@ -1,7 +1,7 @@
-# Improved_WisecondorX
+# WisecondorXtena
 A modified version of the copy number caller, WisecondorX (https://github.com/CenterForMedicalGeneticsGhent/WisecondorX), that now infers purity and produces improved copy number calls from lpWGS data.
 
-## WisecondorXtena :wink:
+## The modified/improved version of WisecondorX
 This version of WisecondorX utilizes the original code with no specifications other than an elevated bin size (the default is 5kb, this uses 500kb), calculates purity and how offset the mean log2 ratio is from zero, and reiterates these values back into the modified code as parameters that adjusts the genomic segments accordingly.
 
 ### The original WisecondorX consists of 3 main steps
@@ -10,7 +10,7 @@ This version of WisecondorX utilizes the original code with no specifications ot
 * CNV prediction (through a user-definable cut-off ("beta"), or the default (leverages Z-scores))
 
 
-### The modified WisecondorX is run via snakefile, consisting of two sections
+### WisecondorXtena is run via snakefile, consisting of two sections
 **The run_updated_wisecondorX.smk set up:** 
 
 Section 1 (initial run to calculate offset mean and purity):
