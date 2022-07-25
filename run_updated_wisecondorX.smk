@@ -34,7 +34,7 @@ rule bam_to_npz_samples:
     input:
         f"{bam_path_all}" + "{sample}.LOWPASS.markDupl.bam"
     output:
-        f"{base_path}" + "01_samples_npz/{sample}.npz"
+        f"{base_path}" + "02_samples_npz/{sample}.npz"
     params:
         wisecondorX="/home/krdaley/anaconda3/envs/wisecondorX/bin/WisecondorX"
     conda:
@@ -72,7 +72,7 @@ rule npz_ref_creation:
 
 rule CN_prediction:
     input:
-        npz=f"{base_path}" + "01_samples_npz/{sample}.npz",
+        npz=f"{base_path}" + "02_samples_npz/{sample}.npz",
         ref="/projects/rmorin_scratch/NHL_ctDNA_analysis_scratch/wisecondorX/01wisecondorx_ref_fromchris.500kb.2020-11-24.86.npz"
     output:
         bed=f"{base_path_unadjusted}" + "{sample}_output/{sample}_bins.bed",
@@ -82,7 +82,7 @@ rule CN_prediction:
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/wisecondorX.yaml"
     log: 
-        f"{base_path}" + "01_samples_npz/log/{sample}.wisecondor.log"
+        f"{base_path}" + "02_samples_npz/log/{sample}.wisecondor.log"
     shell:
         "{params.wisecondorX} predict {input.npz} {input.ref} $(dirname {output.bed})/{wildcards.sample} --bed --plot --ylim [-2,2] > {log} 2>&1 "
 
@@ -96,7 +96,7 @@ rule Plot_CN_and_density_unshifted:
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
-        f"{base_path}" + "01_samples_npz/log_merged_plots/{sample}.wisecondor.log"
+        f"{base_path}" + "02_samples_npz/log_merged_plots/{sample}.wisecondor.log"
     shell:
         "Rscript /home/krdaley/anaconda3/envs/wisecondorX/lib/python3.8/site-packages/wisecondorX/include/cn_dist_plot_merge.R {input.bed} {input.png} {output.pdf} > {log} 2>&1 "
 
@@ -109,7 +109,7 @@ rule Determine_offset_mean_and_purity:
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
-        f"{base_path}" + "01_samples_npz/log_purity_est/{sample}.wisecondor.log"
+        f"{base_path}" + "02_samples_npz/log_purity_est/{sample}.wisecondor.log"
     shell:
         "Rscript /home/krdaley/anaconda3/envs/wisecondorX/lib/python3.8/site-packages/wisecondorX/include/offset_mean_and_purity_calc.R {input.bed} {output.txt} > {log} 2>&1 "
 
@@ -123,7 +123,7 @@ rule Determine_offset_mean_and_purity:
 #This rule can be finicky due to the bash shell portion, so note that the do_rerun step works fine on a mac, but has not been used on a windows computer, so there might be an error about return carriages or something? I havent had it but I was told it might occur in the future, if so, the do_rerun step might need to be tweaked..just a thought. 
 rule Shift_mean_add_beta:
     input:
-        npz=f"{base_path}" + "01_samples_npz/{sample}.npz",
+        npz=f"{base_path}" + "02_samples_npz/{sample}.npz",
         ref="/projects/rmorin_scratch/NHL_ctDNA_analysis_scratch/wisecondorX/01wisecondorx_ref_fromchris.500kb.2020-11-24.86.npz",
         mean_purity_file=f"{base_path_unadjusted}" + "{sample}_output/new_offset_mean_and_purity.txt"
     output:
@@ -135,7 +135,7 @@ rule Shift_mean_add_beta:
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/wisecondorX.yaml"
     log: 
-        f"{base_path}" + "01_samples_npz/log/{sample}.wisecondor.log"
+        f"{base_path}" + "02_samples_npz/log/{sample}.wisecondor.log"
     shell:
         """
         offset_value=$(head -1 {input.mean_purity_file} | grep -Eo [0-9]+\.[0-9]+.+)
@@ -159,7 +159,7 @@ rule Plot_CN_and_density_postshift:
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
-        f"{base_path}" + "01_samples_npz/log_merged_plots/{sample}.wisecondor.log"
+        f"{base_path}" + "02_samples_npz/log_merged_plots/{sample}.wisecondor.log"
     shell:
         "Rscript /home/krdaley/anaconda3/envs/wisecondorX/lib/python3.8/site-packages/wisecondorX/include/cn_dist_plot_merge.R {input.bed} {input.png} {output.pdf} > {log} 2>&1 "
 
@@ -173,6 +173,6 @@ rule Recalculate_shifted_mean_and_purity:
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
-        f"{base_path}" + "01_samples_npz/log_purity_est/{sample}.wisecondor.shifted.log"
+        f"{base_path}" + "02_samples_npz/log_purity_est/{sample}.wisecondor.shifted.log"
     shell:
         "Rscript /home/krdaley/anaconda3/envs/wisecondorX/lib/python3.8/site-packages/wisecondorX/include/offset_mean_and_purity_calc.R {input.bed} {output.txt} > {log} 2>&1 "
