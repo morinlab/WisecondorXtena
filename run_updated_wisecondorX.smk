@@ -4,7 +4,7 @@ import glob, os
 # The workflow was made by Kristena Daley on Dec 9, 2020 (Started on Dec 9, 2020, finished on Aug 31, 2021)
 
 # Declare a variable for where to find your bams
-bam_path_all = "/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_MarkDuplicates_test_after_bug_fix/"
+bam_path_all = "/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_MarkDuplicates_test/"
 bam_path_normals = "/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_all_500kb_bincorrection/00_reference_bam/"
 base_path = "/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_all_500kb_bincorrection/"
 base_path_unadjusted = "/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_all_500kb_bincorrection/03_modified_code_output_all/01_unadjusted_output/"
@@ -18,7 +18,7 @@ for bamfile in glob.glob(bam_path_all + "*.bam"):
 
 rule all:
     input:
-        expand("/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_all_500kb_bincorrection/03_modified_code_output_all/02_adjusted_output/{sample}_output_fixed/new_offset_mean_and_purity.txt",sample=samples)
+        expand("/projects/rmorin/projects/NHL_ctDNA_analysis/wisecondorX/lpWGS_all_500kb_bincorrection/03_modified_code_output_all/02_adjusted_output/{sample}_output/new_offset_mean_and_purity.txt",sample=samples)
 
 ##
 ## Section 1: 
@@ -35,16 +35,24 @@ rule bam_to_npz_samples:
         f"{bam_path_all}" + "{sample}.LOWPASS.markDupl.bam"
     output:
         f"{base_path}" + "01_samples_npz/{sample}.npz"
+    params:
+        wisecondorX="/home/krdaley/anaconda3/envs/wisecondorX/bin/WisecondorX"
+    conda:
+        "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/wisecondorX.yaml"
     shell:
-        "WisecondorX convert {input} {output} --binsize 500000"
+        "{params.wisecondorX} convert {input} {output} --binsize 500000"
 
 rule bam_to_npz_normals:
     input:
         f"{bam_path_normals}" + "{sample}.bam"
     output:
         f"{base_path}" + "01_reference_npz/{sample}.npz"
+    params:
+        wisecondorX="/home/krdaley/anaconda3/envs/wisecondorX/bin/WisecondorX"
+    conda:
+        "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/wisecondorX.yaml"
     shell:
-        "WisecondorX convert {input} {output} --binsize 500000"
+        "{params.wisecondorX} convert {input} {output} --binsize 500000"
 
 #Chris Rushton made a reference and it is located here: 
 #/projects/rmorin_scratch/NHL_ctDNA_analysis_scratch/wisecondorX/01wisecondorx_ref_fromchris.500kb.2020-11-24.86.npz
@@ -54,8 +62,12 @@ rule npz_ref_creation:
         f"{base_path}" + "01_reference_npz/"
     output:
         f"{base_path}" + "01_reference_npz/WisecondorX_reference_500kb.npz"
+    params:
+        wisecondorX="/home/krdaley/anaconda3/envs/wisecondorX/bin/WisecondorX"
+    conda:
+        "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/wisecondorX.yaml"
     shell:
-        "WisecondorX newref {input}/*.npz {output} --binsize 500000"
+        "{params.wisecondorX} newref {input}/*.npz {output} --binsize 500000"
 
 
 rule CN_prediction:
@@ -63,8 +75,8 @@ rule CN_prediction:
         npz=f"{base_path}" + "01_samples_npz/{sample}.npz",
         ref="/projects/rmorin_scratch/NHL_ctDNA_analysis_scratch/wisecondorX/01wisecondorx_ref_fromchris.500kb.2020-11-24.86.npz"
     output:
-        bed=f"{base_path_unadjusted}" + "{sample}_output_fixed/{sample}_bins.bed",
-        png=f"{base_path_unadjusted}" + "{sample}_output_fixed/{sample}.plots/genome_wide.png"
+        bed=f"{base_path_unadjusted}" + "{sample}_output/{sample}_bins.bed",
+        png=f"{base_path_unadjusted}" + "{sample}_output/{sample}.plots/genome_wide.png"
     params:
         wisecondorX="/home/krdaley/anaconda3/envs/wisecondorX/bin/WisecondorX"
     conda:
@@ -77,10 +89,10 @@ rule CN_prediction:
 
 rule Plot_CN_and_density_unshifted:
     input: 
-        bed=f"{base_path_unadjusted}" + "{sample}_output_fixed/{sample}_bins.bed",
-        png=f"{base_path_unadjusted}" + "{sample}_output_fixed/{sample}.plots/genome_wide.png" 
+        bed=f"{base_path_unadjusted}" + "{sample}_output/{sample}_bins.bed",
+        png=f"{base_path_unadjusted}" + "{sample}_output/{sample}.plots/genome_wide.png" 
     output:
-        pdf=f"{base_path_unadjusted}" + "{sample}_output_fixed/genome_wide_density.pdf"
+        pdf=f"{base_path_unadjusted}" + "{sample}_output/genome_wide_density.pdf"
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
@@ -90,10 +102,10 @@ rule Plot_CN_and_density_unshifted:
 
 rule Determine_offset_mean_and_purity:
     input:
-        bed=f"{base_path_unadjusted}" + "{sample}_output_fixed/{sample}_bins.bed",
-        pdf=f"{base_path_unadjusted}" + "{sample}_output_fixed/genome_wide_density.pdf"
+        bed=f"{base_path_unadjusted}" + "{sample}_output/{sample}_bins.bed",
+        pdf=f"{base_path_unadjusted}" + "{sample}_output/genome_wide_density.pdf"
     output:
-        txt=f"{base_path_unadjusted}" + "{sample}_output_fixed/new_offset_mean_and_purity.txt"
+        txt=f"{base_path_unadjusted}" + "{sample}_output/new_offset_mean_and_purity.txt"
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
@@ -113,10 +125,10 @@ rule Shift_mean_add_beta:
     input:
         npz=f"{base_path}" + "01_samples_npz/{sample}.npz",
         ref="/projects/rmorin_scratch/NHL_ctDNA_analysis_scratch/wisecondorX/01wisecondorx_ref_fromchris.500kb.2020-11-24.86.npz",
-        mean_purity_file=f"{base_path_unadjusted}" + "{sample}_output_fixed/new_offset_mean_and_purity.txt"
+        mean_purity_file=f"{base_path_unadjusted}" + "{sample}_output/new_offset_mean_and_purity.txt"
     output:
-        bed=f"{base_path_adjusted}" + "{sample}_output_fixed/{sample}_bins.bed",
-        png=f"{base_path_adjusted}" + "{sample}_output_fixed/{sample}.plots/genome_wide.png"
+        bed=f"{base_path_adjusted}" + "{sample}_output/{sample}_bins.bed",
+        png=f"{base_path_adjusted}" + "{sample}_output/{sample}.plots/genome_wide.png"
         #done=f"{base_path_adjusted}" + "{sample}_output/{sample}.done"
     params:
         wisecondorX="/home/krdaley/anaconda3/envs/wisecondorX/bin/WisecondorX"
@@ -140,10 +152,10 @@ rule Shift_mean_add_beta:
 
 rule Plot_CN_and_density_postshift:
     input: 
-        bed=f"{base_path_adjusted}" + "{sample}_output_fixed/{sample}_bins.bed",
-        png=f"{base_path_adjusted}" + "{sample}_output_fixed/{sample}.plots/genome_wide.png"
+        bed=f"{base_path_adjusted}" + "{sample}_output/{sample}_bins.bed",
+        png=f"{base_path_adjusted}" + "{sample}_output/{sample}.plots/genome_wide.png"
     output:
-        pdf=f"{base_path_adjusted}" + "{sample}_output_fixed/genome_wide_density.pdf"
+        pdf=f"{base_path_adjusted}" + "{sample}_output/genome_wide_density.pdf"
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
@@ -154,11 +166,10 @@ rule Plot_CN_and_density_postshift:
 
 rule Recalculate_shifted_mean_and_purity:
     input:
-        #f"{base_path_adjusted}" + "{sample}_output/{sample}_bins.bed"
         bed=rules.Shift_mean_add_beta.output.bed,
-        pdf=f"{base_path_adjusted}" + "{sample}_output_fixed/genome_wide_density.pdf"
+        pdf=rules.Plot_CN_and_density_postshift.output.pdf
     output:
-        txt=f"{base_path_adjusted}" + "{sample}_output_fixed/new_offset_mean_and_purity.txt"
+        txt=f"{base_path_adjusted}" + "{sample}_output/new_offset_mean_and_purity.txt"
     conda:
         "/projects/rmorin/projects/NHL_ctDNA_analysis/snakemake/R.yaml"
     log:
