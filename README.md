@@ -35,13 +35,15 @@ Section 2 (second run of WisecondorX to adjust segments):
 ## New file generated
 * A segment file (.seg) is now produced by WisecondorXtena
 
-## Directory structure of the snakefile (Can be modified to the users preference, but this is the structure that Kristena has), this is on the GSC under `/projects/rmorin/projects/NHL_ctDNA_analysis` : 
-### > wisecondorX (main folder)
-###   > lpWGS_all_500kb_bincorrection
-###     > 00_reference_bam (contains bams to be used for reference creation)
-###     > 01_reference_npz (contains reference bams converted to npz format)
-###     > 01_samples_npz (contains sample bams converted to npz format)
-###     > 03_modified_code_output_all
-###       > 01_unadjusted_output (results from the first run of wisecondorX, before segments are adjusted)
-###       > 02_adjusted_output (results from the second run of wisecondorX, after segments are adjusted)
-###   > lpWGS_MarkDuplicates (contains samples to be run through WisecondorXtena, these have gone through Chris' ctDNA pipeline including the Picard Mark Duplicates program)
+## WisecondorXtena directory structure for snakefile
+### This can be modified to the users preference, but this is the structure that Kristena has, 
+### This is on the GSC under `/projects/rmorin/projects/NHL_ctDNA_analysis` : 
+ > wisecondorX (main folder)
+   > lpWGS_all_500kb_bincorrection
+     > 00_reference_bam (contains bams to be used for reference creation)
+     > 01_reference_npz (contains reference bams converted to npz format)
+     > 01_samples_npz (contains sample bams converted to npz format)
+     > 03_modified_code_output_all
+       > 01_unadjusted_output (results from the first run of wisecondorX, before segments are adjusted)
+       > 02_adjusted_output (results from the second run of wisecondorX, after segments are adjusted)
+   > lpWGS_MarkDuplicates (contains samples to be run through WisecondorXtena, these have gone through Chris' ctDNA pipeline including the Picard Mark Duplicates program)
