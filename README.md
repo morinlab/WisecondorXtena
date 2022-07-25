@@ -41,7 +41,7 @@ Section 2 (second run of WisecondorX to adjust segments):
    - lpWGS_all_500kb_bincorrection
      - 00_reference_bam (contains bams to be used for reference creation)
      - 01_reference_npz (contains reference bams converted to npz format)
-     - 01_samples_npz (contains sample bams converted to npz format)
+     - 02_samples_npz (contains sample bams converted to npz format)
      - 03_modified_code_output_all
        - 01_unadjusted_output (results from the first run of wisecondorX, before segments are adjusted)
        - 02_adjusted_output (results from the second run of wisecondorX, after segments are adjusted)
